@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "prettier": "^3.5.2",
     "vite": "^6.2.0"
   },
   "dependencies": {
@@ -8,6 +9,7 @@
     "react-dom": "^19.0.0"
   },
   "scripts": {
+    "test": "prettier --check .",
     "dev": "vite"
   }
 }
