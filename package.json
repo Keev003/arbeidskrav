@@ -14,6 +14,11 @@
     "test": "tsc --noEmit && prettier --check .",
     "dev": "vite",
     "prepare": "husky",
+    "db:civilDefense:import": "docker exec -i /postgis /usr/bin/psql --user postgres < tmp/Samfunnssikkerhet_0000_Norge_25832_Sivilforsvarsdistrikter_PostGIS.sql",
     "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arbeidskrav"
   }
 }

@@ -27,14 +27,21 @@ function MapView() {
 const osmLayer = new TileLayer({ source: new OSM() });
 const civilDefenseLayer = new VectorLayer({
     source: new VectorSource({
+        url: "/geojson/Sivilforsvarsdistrikter.geojson",
+        format: new GeoJSON(),
+    }),
+});
+const emergencyShelter = new VectorLayer({
+    source: new VectorSource({
         url: "/geojson/tilfluktsrom.geojson",
         format: new GeoJSON(),
     }),
 });
 
+
 const map = new Map({
     view: new View({ center: [10.8, 59.9], zoom: 8 }),
-    layers: [osmLayer, civilDefenseLayer],
+    layers: [osmLayer, civilDefenseLayer, emergencyShelter],
 });
 
 export function Application() {
