@@ -1,11 +1,25 @@
 import {Hono} from "hono";
 import {serve} from "@hono/node-server";
+import pg from "pg";
+
+const postgreSql = new pg.Pool({ user: "postgres" })
 
 const app = new Hono();
 app.get("/", async (c) => {
     return c.text("Hello SOMEBODY");
 });
-app.get("/arbeidskrav/api/brannstasjoner", (c) => {
+app.get("/arbeidskrav/api/brannstasjoner", async (c) => {
+    const result = await postgreSql.query(
+        `SELECT 
+            objid, 
+            objtype, 
+            brannstasjon.brannstasjon as brannstasjon, 
+            posisjon::json as coordinates, 
+            brannvesen, 
+            stasjonstype, 
+            kasernert 
+        FROM brannstasjoner_67df53337aad4d96b2746324048c4498.brannstasjon
+    `)
     return c.json({
         type: "FeatureCollection",
         crs: {
@@ -14,7 +28,14 @@ app.get("/arbeidskrav/api/brannstasjoner", (c) => {
                 name: "urn:ogc:def:crs:OGC:1.3:CRS84",
             },
         },
-        features: []
+        features: result.rows.map(({ coordinates, ...properties }) => ({
+            type: "Feature",
+            properties,
+            geometry: {
+                type: "Point",
+                coordinates
+            }
+        }))
     });
-})
+});
 serve(app);
