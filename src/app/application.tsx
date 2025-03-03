@@ -67,7 +67,7 @@ map.on('pointermove', (event) => {
         }
 
         lastHoveredFeature = feature || null;
-        vectorLayer.getSource()?.changed(); // Oppdater kartet
+        vectorLayer.getSource()?.changed();
     }
 });
 
@@ -82,7 +82,7 @@ const clickStyle = new Style({
 });
 
 const popup = document.createElement('div');
-popup.className = 'popup'; // ✅ Use CSS class
+popup.className = 'popup'; //
 document.body.appendChild(popup);
 
 let lastClickedFeature: Feature | null = null;
