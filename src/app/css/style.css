@@ -1,0 +1,16 @@
+/* 🏷️ Popup Styling */
+.popup {
+    position: absolute;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: none;
+    pointer-events: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 🖱️ Change Cursor on Hover */
+.ol-map-container:hover {
+    cursor: pointer;
+}

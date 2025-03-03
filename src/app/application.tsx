@@ -10,6 +10,7 @@ import {pointerMove} from "ol/events/condition";
 import Select from 'ol/interaction/Select';
 import {Fill, Stroke, Style} from "ol/style";
 import CircleStyle from "ol/style/Circle";
+import "./css/style.css";
 
 useGeographic();
 
@@ -83,6 +84,55 @@ map.on('pointermove', (event) => {
 });
 
 map.addLayer(vectorLayer);
+
+// 🔴 Clicked Style (Red Dots)
+const clickStyle = new Style({
+    image: new CircleStyle({
+        radius: 7,
+        fill: new Fill({ color: 'red' }),
+        stroke: new Stroke({ color: 'black', width: 2 }),
+    }),
+});
+
+// 🏷️ Create Popup Element (Dynamically in HTML)
+const popup = document.createElement('div');
+popup.className = 'popup'; // ✅ Use CSS class
+document.body.appendChild(popup);
+
+let lastClickedFeature: Feature | null = null;
+
+// 🖱️ Click Event to Show Info
+map.on('singleclick', (event) => {
+    const feature = map.forEachFeatureAtPixel(event.pixel, (feat) => feat as Feature | null);
+
+    if (feature) {
+        // Reset previous click effect
+        if (lastClickedFeature) {
+            lastClickedFeature.setStyle(defaultStyle);
+        }
+
+        // Apply clicked style
+        feature.setStyle(clickStyle);
+
+        // 🔍 Extract API Info
+        const props = feature.getProperties();
+        console.log("API Data on Click:", props); // Debugging
+
+        popup.innerHTML = `
+        <strong>${props.brannstasjon || 'Unknown Station'}</strong><br>
+        Type: ${props.stasjonstype || 'N/A'}<br>
+        Brannvesen: ${props.brannvesen || 'N/A'}
+    `;
+        popup.style.left = `${event.pixel[0] + 15}px`;
+        popup.style.top = `${event.pixel[1] + 15}px`;
+        popup.style.display = 'block';
+
+        lastClickedFeature = feature;
+    } else {
+        // Hide popup if clicking outside a feature
+        popup.style.display = 'none';
+    }
+});
 
 
 export function Application() {
