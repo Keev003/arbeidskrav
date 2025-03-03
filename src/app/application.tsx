@@ -33,7 +33,7 @@ const civilDefenseLayer = new VectorLayer({
 });
 const fireStationLayer = new VectorLayer({
     source: new VectorSource({
-        url: "/geojson/Brannstasjoner.geojson",
+        url: "/api/brannstasjoner",
         format: new GeoJSON(),
     }),
 });
