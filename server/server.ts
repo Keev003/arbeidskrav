@@ -14,7 +14,7 @@ app.get("/arbeidskrav/api/brannstasjoner", async (c) => {
             objid, 
             objtype, 
             brannstasjon.brannstasjon as brannstasjon, 
-            posisjon::json as coordinates, 
+            st_transform(posisjon, 4326)::json as geometry, 
             brannvesen, 
             stasjonstype, 
             kasernert 
@@ -28,7 +28,7 @@ app.get("/arbeidskrav/api/brannstasjoner", async (c) => {
                 name: "urn:ogc:def:crs:OGC:1.3:CRS84",
             },
         },
-        features: result.rows.map(({ coordinates, ...properties }) => ({
+        features: result.rows.map(({ geometry: {coordinates}, ...properties }) => ({
             type: "Feature",
             properties,
             geometry: {

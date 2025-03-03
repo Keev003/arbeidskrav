@@ -5,9 +5,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {useGeographic} from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
-import {Layer} from "ol/layer";
-import {ZoomToMeButton} from "../location/zoomToMeButton";
-import {ShowMeCheckbox} from "../location/showMeCheckbox";
 import {GeoJSON} from "ol/format";
 
 useGeographic();
@@ -15,25 +12,16 @@ useGeographic();
 const userSource = new VectorSource();
 const view = new View({ center: [10.8, 59.9], zoom: 10 });
 
-function MapView() {
-    const mapRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        map.setTarget(mapRef.current!);
-        return () => map.setTarget(undefined);
-    }, []);
-    return <div ref={mapRef}></div>;
-}
-
 const osmLayer = new TileLayer({ source: new OSM() });
 const civilDefenseLayer = new VectorLayer({
     source: new VectorSource({
-        url: "/geojson/Sivilforsvarsdistrikter.geojson",
+        url: "/arbeidskrav/geojson/Sivilforsvarsdistrikter.geojson",
         format: new GeoJSON(),
     }),
 });
 const fireStationLayer = new VectorLayer({
     source: new VectorSource({
-        url: "/api/brannstasjoner",
+        url: "/arbeidskrav/api/brannstasjoner",
         format: new GeoJSON(),
     }),
 });
