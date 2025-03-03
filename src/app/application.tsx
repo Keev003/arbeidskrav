@@ -31,9 +31,9 @@ const civilDefenseLayer = new VectorLayer({
         format: new GeoJSON(),
     }),
 });
-const emergencyShelter = new VectorLayer({
+const fireStationLayer = new VectorLayer({
     source: new VectorSource({
-        url: "/geojson/tilfluktsrom.geojson",
+        url: "/geojson/Brannstasjoner.geojson",
         format: new GeoJSON(),
     }),
 });
@@ -41,7 +41,7 @@ const emergencyShelter = new VectorLayer({
 
 const map = new Map({
     view: new View({ center: [10.8, 59.9], zoom: 8 }),
-    layers: [osmLayer, civilDefenseLayer, emergencyShelter],
+    layers: [osmLayer, civilDefenseLayer, fireStationLayer],
 });
 
 export function Application() {

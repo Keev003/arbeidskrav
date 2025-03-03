@@ -14,7 +14,7 @@
     "test": "tsc --noEmit && prettier --check .",
     "dev": "vite",
     "prepare": "husky",
-    "db:civilDefense:import": "docker exec -i /postgis /usr/bin/psql --user postgres < tmp/Samfunnssikkerhet_0000_Norge_25832_Sivilforsvarsdistrikter_PostGIS.sql",
+    "db:fireStation:import": "docker exec -i /postgis /usr/bin/psql --user postgres < tmp/Samfunnssikkerhet_0000_Norge_25833_Brannstasjoner_PostGIS.sql",
     "build": "vite build"
   },
   "repository": {
