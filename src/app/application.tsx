@@ -1,21 +1,16 @@
 import {Feature, Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {useGeographic} from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import {GeoJSON} from "ol/format";
-import {pointerMove} from "ol/events/condition";
-import Select from 'ol/interaction/Select';
 import {Fill, Stroke, Style} from "ol/style";
 import CircleStyle from "ol/style/Circle";
 import "./css/style.css";
 
 useGeographic();
-
-const userSource = new VectorSource();
-const view = new View({ center: [10.8, 59.9], zoom: 10 });
 
 const osmLayer = new TileLayer({ source: new OSM() });
 const civilDefenseLayer = new VectorLayer({
@@ -31,14 +26,12 @@ const fireStationLayer = new VectorLayer({
     }),
 });
 
-
 const map = new Map({
     view: new View({ center: [10.8, 59.9], zoom: 8 }),
     layers: [osmLayer, civilDefenseLayer, fireStationLayer],
 
 });
 
-// 🟢 Standard stil (blå prikker)
 const defaultStyle = new Style({
     image: new CircleStyle({
         radius: 5,
@@ -47,7 +40,6 @@ const defaultStyle = new Style({
     }),
 });
 
-// 🟡 Hover-stil (gule prikker)
 const hoverStyle = new Style({
     image: new CircleStyle({
         radius: 7,
@@ -56,24 +48,20 @@ const hoverStyle = new Style({
     }),
 });
 
-// VectorLayer med standard stil
 const vectorLayer = new VectorLayer({
     source: fireStationLayer.getSource() ?? undefined,
     style: (feature) => feature.get('hover') ? hoverStyle : defaultStyle,
 });
 
 let lastHoveredFeature: Feature | null = null;
-// 🖱️ Håndter hover-effekt
 map.on('pointermove', (event) => {
     const feature = map.forEachFeatureAtPixel(event.pixel, (feat) => feat as Feature);
 
     if (feature !== lastHoveredFeature) {
-        // Tilbakestill forrige feature
         if (lastHoveredFeature) {
             lastHoveredFeature.set('hover', false);
         }
 
-        // Sett ny feature til hover-stil
         if (feature) {
             feature.set('hover', true);
         }
@@ -85,7 +73,6 @@ map.on('pointermove', (event) => {
 
 map.addLayer(vectorLayer);
 
-// 🔴 Clicked Style (Red Dots)
 const clickStyle = new Style({
     image: new CircleStyle({
         radius: 7,
@@ -94,29 +81,24 @@ const clickStyle = new Style({
     }),
 });
 
-// 🏷️ Create Popup Element (Dynamically in HTML)
 const popup = document.createElement('div');
 popup.className = 'popup'; // ✅ Use CSS class
 document.body.appendChild(popup);
 
 let lastClickedFeature: Feature | null = null;
 
-// 🖱️ Click Event to Show Info
 map.on('singleclick', (event) => {
     const feature = map.forEachFeatureAtPixel(event.pixel, (feat) => feat as Feature | null);
 
     if (feature) {
-        // Reset previous click effect
         if (lastClickedFeature) {
             lastClickedFeature.setStyle(defaultStyle);
         }
 
-        // Apply clicked style
         feature.setStyle(clickStyle);
 
-        // 🔍 Extract API Info
         const props = feature.getProperties();
-        console.log("API Data on Click:", props); // Debugging
+        console.log("API Data on Click:", props);
 
         popup.innerHTML = `
         <strong>${props.brannstasjon || 'Unknown Station'}</strong><br>
@@ -129,7 +111,6 @@ map.on('singleclick', (event) => {
 
         lastClickedFeature = feature;
     } else {
-        // Hide popup if clicking outside a feature
         popup.style.display = 'none';
     }
 });
