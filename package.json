@@ -19,7 +19,10 @@
     "test": "tsc --noEmit && prettier --check .",
     "dev": "vite",
     "prepare": "husky",
+    "db:fireStation": "npm run db:firestation:download && npm run db:fireStation:import",
+    "db:fireSatation:download": "download --extract --out tmp https://nedlasting.geonorge.no/geonorge/Samfunnssikkerhet/Brannstasjoner/PostGIS/Samfunnssikkerhet_0000_Norge_25833_Brannstasjoner_PostGIS.zip",
     "db:fireStation:import": "docker exec -i /postgis /usr/bin/psql --user postgres < tmp/Samfunnssikkerhet_0000_Norge_25833_Brannstasjoner_PostGIS.sql",
+    "postinstall": "cd server && npm install",
     "build": "vite build"
   },
   "repository": {
