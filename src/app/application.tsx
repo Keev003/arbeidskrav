@@ -10,6 +10,7 @@ import { Fill, Stroke, Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";
 import "./css/style.css";
 
+
 useGeographic();
 
 const osmLayer = new TileLayer({ source: new OSM() });
